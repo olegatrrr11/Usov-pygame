@@ -10,9 +10,10 @@ clock = pygame.time.Clock()
 
 razmer = 10
 
-#создаём пищу в образе яблока из корневой папки картникой image.png и уменьшаем его до состояния кубика
+# создаём пищу в образе яблока из корневой папки картникой image.png и уменьшаем его до состояния кубика
 apple = pygame.image.load('image.png')
 apple = pygame.transform.scale(apple, (razmer, razmer))
+
 
 def draw_button(text, x, y, width, height):
     rect = pygame.Rect(x, y, width, height)
@@ -29,8 +30,9 @@ def draw_button(text, x, y, width, height):
 
     return rect
 
-#функция самого меню, где располагаются кнопки 'начать игру' и 'выход', после нажатия начать игру, начианется игра
-#после нажатия выход, игра закрывается
+
+# функция самого меню, где располагаются кнопки 'начать игру' и 'выход', после нажатия начать игру, начианется игра
+# после нажатия выход, игра закрывается
 def menu():
     while True:
         screen.fill((255, 255, 255))
@@ -52,10 +54,12 @@ def menu():
                     pygame.quit()
                     sys.exit()
 
+
 def draw_text(text, size, color, surface, x, y):
     f = pygame.font.SysFont('Arial', size)
     text = f.render(text, True, color)
     surface.blit(text, (x, y))
+
 
 def game():
     x = 300
@@ -70,7 +74,7 @@ def game():
     y_random = round(random.randrange(0, 400 - razmer) / 10) * 10
 
     schet = 0
-
+    # перемещение по определённому размеру через стрелки на клавиатуре
     while True:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -92,18 +96,18 @@ def game():
 
         x += x_kub
         y += y_kub
-
+        # выкидывает в меню, если змейка ушла дальше рамок приложения
         if x >= 600 or x < 0 or y >= 400 or y < 0:
             konec_igri(schet)
-
+        # если координаты какой либо части змейки будут равны координате первого кубика из змеи, то игра прекращается
         for k in zmey[:-1]:
             if k == (x, y):
                 konec_igri(schet)
-
+        # добавляет новые координаты змеи, а старые удаляет, введётся для этого переменная dlina
         zmey.append((x, y))
         if len(zmey) > dlina:
             del zmey[0]
-
+        # если кординаты головы змеи равна коориданатам пищи, то змея увеличивается и счёт увеличивается
         if x == x_random and y == y_random:
             schet += 1
             dlina += 1
@@ -111,17 +115,21 @@ def game():
             y_random = round(random.randrange(0, 400 - razmer) / 10) * 10
 
         screen.fill((255, 255, 255))
+        # рисует части змеи по новым координатам
         for i in zmey:
             pygame.draw.rect(screen, (0, 255, 0), [i[0], i[1], razmer, razmer])
 
         screen.blit(apple, (x_random, y_random))
-
+        # рисуется текст на определённых координатах
         draw_text(f'Счет: {schet}', 20, (0, 0, 0), screen, 10, 10)
 
         pygame.display.update()
         clock.tick(15)
 
+
+# функция конца игры
 def konec_igri(schet):
     menu()
+
 
 menu()
