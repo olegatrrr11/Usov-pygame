@@ -1,3 +1,3 @@
 Чтобы установить и запустить игру, надо установить библиотеки, 
 которые находятся в корневой папке в txt файле "requirements.txt". 
-Надо прописать команду pip install requirements.txt и запустить python файл Змейка.py
+Надо прописать команду pip install -r requirements.txt и запустить python файл Змейка.py
